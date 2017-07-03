@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+    <HBox>
+        <Button mnemonicParsing="false" onMouseClicked="#ReadDataFromDBOnAction" text="Прочитать данные из базы" />
+        <Button mnemonicParsing="false" onMouseClicked="#CalculateOnAction" text="Рассчитать показатели" />
+    </HBox>
+    <TableView fx:id="dataInputTable">
+        <columns>
+            <TableColumn fx:id="D1Column" prefWidth="112.0"/>
+            <TableColumn fx:id="P1Column" prefWidth="112.0"/>
+            <TableColumn fx:id="V1Column" prefWidth="112.0"/>
+            <TableColumn fx:id="V2Column" prefWidth="112.0"/>
+            <TableColumn fx:id="V3Column" prefWidth="130.0"/>
+            <TableColumn fx:id="V4Column" prefWidth="130.0"/>
+        </columns>
+    </TableView>
+    <TableView fx:id="dataTable">
+        <columns>
+            <TableColumn fx:id="P1DataColumn" prefWidth="95.0"/>
+            <TableColumn fx:id="V5DataColumn" prefWidth="145.0"/>
+            <TableColumn fx:id="V6DataColumn" prefWidth="115.0"/>
+            <TableColumn fx:id="V7DataColumn" prefWidth="180.0"/>
+            <TableColumn fx:id="V8DataColumn" prefWidth="155.0"/>
+            <TableColumn fx:id="V9DataColumn" prefWidth="113.0"/>
+            <TableColumn fx:id="V10DataColumn" prefWidth="113.0"/>
+        </columns>
+    </TableView>
+    <HBox>
+        <Button mnemonicParsing="false" onMouseClicked="#ImportFromExcelOnAction" text="Прочитать данные из Excel" />
+        <Button mnemonicParsing="false" onMouseClicked="#ExportTableToExcelOnAction" text="Выгрузить данные в Excel" />
+    </HBox>
+</VBox>
