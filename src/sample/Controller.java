@@ -16,9 +16,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.HashMap;
-import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 public class Controller {
 
@@ -49,7 +48,7 @@ public class Controller {
     private ObservableList<DataInputString> dataInputStringObservableList = FXCollections.observableArrayList();
     private ObservableList<DataCalculateInputString> dataCalculateInputStringObservableList = FXCollections.observableArrayList();
 
-    private Map<String, String> fieldsName = new TreeMap<>();
+    private Map<String, String> fieldsName = new LinkedHashMap<>();
 
     public void ImportFromExcelOnAction() {
         try {
@@ -184,13 +183,30 @@ public class Controller {
         XSSFWorkbook book = new XSSFWorkbook();
         XSSFSheet myExcelSheet = book.createSheet("Данные из программы");
 
+        int rowNumberSecondTable = dataInputStringObservableList.size() + 2 + 2;
+        XSSFRow rowSecondTable = myExcelSheet.createRow(rowNumberSecondTable);
+        XSSFRow rowSecondTable1 = myExcelSheet.createRow(rowNumberSecondTable + 1);
+
         XSSFRow row = myExcelSheet.createRow(0);
         XSSFRow row1 = myExcelSheet.createRow(1);
 
         int elementNumber = 0;
+        boolean secondTable = false;
         for (Map.Entry<String, String> entry : fieldsName.entrySet()) {
-            row.createCell(elementNumber).setCellValue(entry.getKey());
-            row1.createCell(elementNumber).setCellValue(entry.getValue());
+            if (elementNumber < 6 && !secondTable) {
+                row.createCell(elementNumber).setCellValue(entry.getKey());
+                row1.createCell(elementNumber).setCellValue(entry.getValue());
+            } else {
+                if (!secondTable) {
+                    secondTable = true;
+                    elementNumber = 0;
+                    rowSecondTable.createCell(elementNumber).setCellValue("P1");
+                    rowSecondTable1.createCell(elementNumber).setCellValue(fieldsName.get("P1"));
+                    elementNumber++;
+                }
+                rowSecondTable.createCell(elementNumber).setCellValue(entry.getKey());
+                rowSecondTable1.createCell(elementNumber).setCellValue(entry.getValue());
+            }
             elementNumber++;
         }
 
@@ -202,11 +218,26 @@ public class Controller {
             row.createCell(2).setCellValue(dataInputString.getV1());
             row.createCell(3).setCellValue(dataInputString.getV2());
             row.createCell(4).setCellValue(dataInputString.getV3());
+            row.createCell(5).setCellValue(dataInputString.getV4());
             rowNumber++;
+        }
+
+        rowNumberSecondTable += 2;
+        for(DataCalculateInputString dataCalculateInputString : dataCalculateInputStringObservableList) {
+            row = myExcelSheet.createRow(rowNumberSecondTable);
+            row.createCell(0).setCellValue(dataCalculateInputString.getP1());
+            row.createCell(1).setCellValue(dataCalculateInputString.getV5());
+            row.createCell(2).setCellValue(dataCalculateInputString.getV6());
+            row.createCell(3).setCellValue(dataCalculateInputString.getV7());
+            row.createCell(4).setCellValue(dataCalculateInputString.getV8());
+            row.createCell(5).setCellValue(dataCalculateInputString.getV9());
+            row.createCell(6).setCellValue(dataCalculateInputString.getV10());
+            rowNumberSecondTable++;
         }
 
         book.write(new FileOutputStream(file));
         book.close();
+        System.out.println("Writing data complete!");
     }
 
     public void ReadDataFromDBOnAction() {
